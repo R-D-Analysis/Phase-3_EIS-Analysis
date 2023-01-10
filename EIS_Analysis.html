@@ -1,0 +1,2138 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>EIS_Analysis</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-12-28"><meta name="DC.source" content="EIS_Analysis.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">EIS Detailed Summary</a></li><li><a href="#2">RUN OCV PROCEDURE</a></li><li><a href="#4">1. OCV</a></li><li><a href="#5">1. OCV Averages</a></li><li><a href="#6">3. OCV</a></li><li><a href="#7">3. OCV Averages</a></li><li><a href="#8">5. OCV</a></li><li><a href="#9">5. OCV Averages</a></li><li><a href="#10">8. OCV</a></li><li><a href="#11">8. OCV Averages</a></li><li><a href="#13">RUN CA PROCEDURE</a></li><li><a href="#15">2. CA</a></li><li><a href="#17">RUN LSV PROCEDURE</a></li><li><a href="#19">4.1 LSV Plots</a></li><li><a href="#20">4.2 LSV Data analysis</a></li><li><a href="#23">Find the current @ fVoltage for each replicate of every formula</a></li><li><a href="#24">LSV Average Plot</a></li><li><a href="#26">RUN MB PROCEDURE</a></li><li><a href="#28">7.1 MB PLOTS</a></li><li><a href="#29">7.2 MB Data Analysis</a></li><li><a href="#30">10.1 MB PLOTS</a></li><li><a href="#32">RUN PEIS PROCEDURE</a></li><li><a href="#34">6. PEIS</a></li><li><a href="#35">9. PEIS (Default view)</a></li><li><a href="#36">9. PEIS (Zoomed View)</a></li><li><a href="#38">RUN GCPL PROCEDURE</a></li><li><a href="#40">11. GCPL</a></li></ul></div><h2 id="1">EIS Detailed Summary</h2><p>This document contains the Carbon-Lignen Phase 2 summary graphs and data analysis.</p><h2 id="2">RUN OCV PROCEDURE</h2><h2 id="4">1. OCV</h2><p>Define nProcess</p><img vspace="5" hspace="5" src="EIS_Analysis_01.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_02.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_03.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_04.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_05.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_06.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_07.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_08.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_09.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_10.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_11.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_12.png" alt=""> <h2 id="5">1. OCV Averages</h2><img vspace="5" hspace="5" src="EIS_Analysis_13.png" alt=""> <h2 id="6">3. OCV</h2><p>Define nProcess</p><img vspace="5" hspace="5" src="EIS_Analysis_14.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_15.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_16.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_17.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_18.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_19.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_20.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_21.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_22.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_23.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_24.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_25.png" alt=""> <h2 id="7">3. OCV Averages</h2><img vspace="5" hspace="5" src="EIS_Analysis_26.png" alt=""> <h2 id="8">5. OCV</h2><p>Define nProcess</p><img vspace="5" hspace="5" src="EIS_Analysis_27.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_28.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_29.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_30.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_31.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_32.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_33.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_34.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_35.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_36.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_37.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_38.png" alt=""> <h2 id="9">5. OCV Averages</h2><img vspace="5" hspace="5" src="EIS_Analysis_39.png" alt=""> <h2 id="10">8. OCV</h2><p>Define nprocess</p><img vspace="5" hspace="5" src="EIS_Analysis_40.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_41.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_42.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_43.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_44.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_45.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_46.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_47.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_48.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_49.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_50.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_51.png" alt=""> <h2 id="11">8. OCV Averages</h2><img vspace="5" hspace="5" src="EIS_Analysis_52.png" alt=""> <h2 id="13">RUN CA PROCEDURE</h2><h2 id="15">2. CA</h2><p>Define x and y variables</p><img vspace="5" hspace="5" src="EIS_Analysis_53.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_54.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_55.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_56.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_57.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_58.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_59.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_60.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_61.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_62.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_63.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_64.png" alt=""> <h2 id="17">RUN LSV PROCEDURE</h2><h2 id="19">4.1 LSV Plots</h2><img vspace="5" hspace="5" src="EIS_Analysis_65.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_66.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_67.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_68.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_69.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_70.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_71.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_72.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_73.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_74.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_75.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_76.png" alt=""> <h2 id="20">4.2 LSV Data analysis</h2><p>The data analysis that we want. This will also include some graphs and whatnot.</p><h2 id="23">Find the current @ fVoltage for each replicate of every formula</h2><p>Create the excel file</p><pre class="codeoutput">Current at -1.5 V for formula               Van-HT High (Control) (Cup ID = AH19) of replicate  1:  -88.344 mA/g 
+
+Current at -1.5 V for formula               Van-HT High (Control) (Cup ID = AH13) of replicate  2: -105.936 mA/g 
+
+Current at -1.5 V for formula               Van-HT High (Control) (Cup ID = AH17) of replicate  3:  -92.380 mA/g 
+
+Current at -1.5 V for formula                          Van-HT Low (Cup ID = AL06) of replicate  1: -215.397 mA/g 
+
+Current at -1.5 V for formula                          Van-HT Low (Cup ID = AL09) of replicate  2: -175.649 mA/g 
+
+Current at -1.5 V for formula                          Van-HT Low (Cup ID = AL04) of replicate  3: -125.824 mA/g 
+
+Current at -1.5 V for formula                          Van-A High (Cup ID = BH12) of replicate  1:  -76.848 mA/g 
+
+Current at -1.5 V for formula                          Van-A High (Cup ID = BH24) of replicate  2:  -80.931 mA/g 
+
+Current at -1.5 V for formula                          Van-A High (Cup ID = BH23) of replicate  3:  -64.698 mA/g 
+
+Current at -1.5 V for formula                           Van-A Low (Cup ID = BL18) of replicate  1: -166.004 mA/g 
+
+Current at -1.5 V for formula                           Van-A Low (Cup ID = BL14) of replicate  2: -130.713 mA/g 
+
+Current at -1.5 V for formula                           Van-A Low (Cup ID = BL19) of replicate  3: -129.279 mA/g 
+
+Current at -1.5 V for formula                        Van-DCA High (Cup ID = CH01) of replicate  1: -119.591 mA/g 
+
+Current at -1.5 V for formula                        Van-DCA High (Cup ID = CH14) of replicate  2: -102.802 mA/g 
+
+Current at -1.5 V for formula                        Van-DCA High (Cup ID = CH07) of replicate  3: -111.193 mA/g 
+
+Current at -1.5 V for formula                         Van-DCA Low (Cup ID = CL23) of replicate  1: -311.643 mA/g 
+
+Current at -1.5 V for formula                         Van-DCA Low (Cup ID = CL11) of replicate  2: -256.358 mA/g 
+
+Current at -1.5 V for formula                         Van-DCA Low (Cup ID = CL04) of replicate  3: -155.971 mA/g 
+
+Current at -1.5 V for formula                Van-A + Indulin High (Cup ID = DH25) of replicate  1:  -51.136 mA/g 
+
+Current at -1.5 V for formula                Van-A + Indulin High (Cup ID = DH18) of replicate  2:  -42.397 mA/g 
+
+Current at -1.5 V for formula                Van-A + Indulin High (Cup ID = DH07) of replicate  3:  -33.025 mA/g 
+
+Current at -1.5 V for formula                 Van-A + Indulin Low (Cup ID = DL16) of replicate  1: -202.957 mA/g 
+
+Current at -1.5 V for formula                 Van-A + Indulin Low (Cup ID = DL22) of replicate  2: -162.305 mA/g 
+
+Current at -1.5 V for formula                 Van-A + Indulin Low (Cup ID = DL24) of replicate  3: -103.892 mA/g 
+
+Current at -1.5 V for formula                     S-Drill CL High (Cup ID = EH06) of replicate  1:  -41.757 mA/g 
+
+Current at -1.5 V for formula                     S-Drill CL High (Cup ID = EH22) of replicate  2:  -31.519 mA/g 
+
+Current at -1.5 V for formula                     S-Drill CL High (Cup ID = EH15) of replicate  3:  -18.650 mA/g 
+
+Current at -1.5 V for formula                      S-Drill CL Low (Cup ID = EL01) of replicate  1: -216.527 mA/g 
+
+Current at -1.5 V for formula                      S-Drill CL Low (Cup ID = EL15) of replicate  2: -139.814 mA/g 
+
+Current at -1.5 V for formula                      S-Drill CL Low (Cup ID = EL06) of replicate  3: -127.967 mA/g 
+
+Current at -1.5 V for formula                     Indulin AT High (Cup ID = FH03) of replicate  1:  -36.620 mA/g 
+
+Current at -1.5 V for formula                     Indulin AT High (Cup ID = FH06) of replicate  2:  -25.416 mA/g 
+
+Current at -1.5 V for formula                     Indulin AT High (Cup ID = FH08) of replicate  3:  -20.072 mA/g 
+
+Current at -1.5 V for formula                      Indulin AT Low (Cup ID = FL20) of replicate  1: -195.324 mA/g 
+
+Current at -1.5 V for formula                      Indulin AT Low (Cup ID = FL12) of replicate  2: -152.373 mA/g 
+
+Current at -1.5 V for formula                      Indulin AT Low (Cup ID = FL16) of replicate  3: -126.288 mA/g 
+
+-88.344024
+-105.936423
+-92.380230
+-215.397441
+-175.648839
+-125.824439
+-76.848159
+-80.930587
+-64.698373
+-166.004429
+-130.712773
+-129.279466
+-119.591466
+-102.802120
+-111.192690
+-311.643036
+-256.358481
+-155.970914
+-51.136226
+-42.397030
+-33.024860
+-202.957185
+-162.304645
+-103.891629
+-41.756742
+-31.519119
+-18.650269
+-216.526893
+-139.813648
+-127.967069
+-36.620304
+-25.415895
+-20.071590
+-195.323737
+-152.373304
+-126.288065
+</pre><h2 id="24">LSV Average Plot</h2><p>Issue: Not all the replicates have the same amount of data Solution: Find the one with the lowest amount of data</p><img vspace="5" hspace="5" src="EIS_Analysis_77.png" alt=""> <h2 id="26">RUN MB PROCEDURE</h2><h2 id="28">7.1 MB PLOTS</h2><p>Define x and y variables</p><img vspace="5" hspace="5" src="EIS_Analysis_115.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_116.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_117.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_118.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_119.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_120.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_121.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_122.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_123.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_124.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_125.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_126.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_127.png" alt=""> <h2 id="29">7.2 MB Data Analysis</h2><pre class="codeoutput">Final Capacity Value for formula               Van-HT High (Control) (Cup ID = AH19) of replicate  1:  162.378 
+
+Final Capacity Value for formula               Van-HT High (Control) (Cup ID = AH13) of replicate  2:  162.702 
+
+Final Capacity Value for formula               Van-HT High (Control) (Cup ID = AH17) of replicate  3:  169.250 
+
+Final Capacity Value for formula                          Van-HT Low (Cup ID = AL06) of replicate  1:  158.808 
+
+Final Capacity Value for formula                          Van-HT Low (Cup ID = AL09) of replicate  2:  148.494 
+
+Final Capacity Value for formula                          Van-HT Low (Cup ID = AL04) of replicate  3:  142.895 
+
+Final Capacity Value for formula                          Van-A High (Cup ID = BH12) of replicate  1:  170.278 
+
+Final Capacity Value for formula                          Van-A High (Cup ID = BH24) of replicate  2:  159.957 
+
+Final Capacity Value for formula                          Van-A High (Cup ID = BH23) of replicate  3:  157.901 
+
+Final Capacity Value for formula                           Van-A Low (Cup ID = BL18) of replicate  1:  162.445 
+
+Final Capacity Value for formula                           Van-A Low (Cup ID = BL14) of replicate  2:  163.656 
+
+Final Capacity Value for formula                           Van-A Low (Cup ID = BL19) of replicate  3:  164.538 
+
+Final Capacity Value for formula                        Van-DCA High (Cup ID = CH01) of replicate  1:  158.877 
+
+Final Capacity Value for formula                        Van-DCA High (Cup ID = CH14) of replicate  2:  158.087 
+
+Final Capacity Value for formula                        Van-DCA High (Cup ID = CH07) of replicate  3:  162.297 
+
+Final Capacity Value for formula                         Van-DCA Low (Cup ID = CL23) of replicate  1:  153.439 
+
+Final Capacity Value for formula                         Van-DCA Low (Cup ID = CL11) of replicate  2:  153.906 
+
+Final Capacity Value for formula                         Van-DCA Low (Cup ID = CL04) of replicate  3:  149.959 
+
+Final Capacity Value for formula                Van-A + Indulin High (Cup ID = DH25) of replicate  1:  156.173 
+
+Final Capacity Value for formula                Van-A + Indulin High (Cup ID = DH18) of replicate  2:  154.468 
+
+Final Capacity Value for formula                Van-A + Indulin High (Cup ID = DH07) of replicate  3:  154.748 
+
+Final Capacity Value for formula                 Van-A + Indulin Low (Cup ID = DL16) of replicate  1:  158.400 
+
+Final Capacity Value for formula                 Van-A + Indulin Low (Cup ID = DL22) of replicate  2:  154.705 
+
+Final Capacity Value for formula                 Van-A + Indulin Low (Cup ID = DL24) of replicate  3:  148.985 
+
+Final Capacity Value for formula                     S-Drill CL High (Cup ID = EH06) of replicate  1:  147.643 
+
+Final Capacity Value for formula                     S-Drill CL High (Cup ID = EH22) of replicate  2:  153.523 
+
+Final Capacity Value for formula                     S-Drill CL High (Cup ID = EH15) of replicate  3:  155.391 
+
+Final Capacity Value for formula                      S-Drill CL Low (Cup ID = EL01) of replicate  1:  158.986 
+
+Final Capacity Value for formula                      S-Drill CL Low (Cup ID = EL15) of replicate  2:  150.252 
+
+Final Capacity Value for formula                      S-Drill CL Low (Cup ID = EL06) of replicate  3:  160.180 
+
+Final Capacity Value for formula                     Indulin AT High (Cup ID = FH03) of replicate  1:  152.030 
+
+Final Capacity Value for formula                     Indulin AT High (Cup ID = FH06) of replicate  2:  159.750 
+
+Final Capacity Value for formula                     Indulin AT High (Cup ID = FH08) of replicate  3:  158.054 
+
+Final Capacity Value for formula                      Indulin AT Low (Cup ID = FL20) of replicate  1:  150.416 
+
+Final Capacity Value for formula                      Indulin AT Low (Cup ID = FL12) of replicate  2:  148.143 
+
+Final Capacity Value for formula                      Indulin AT Low (Cup ID = FL16) of replicate  3:  147.445 
+
+162.377808
+162.701503
+169.249621
+158.808211
+148.494063
+142.894874
+170.277660
+159.956719
+157.901486
+162.444922
+163.656439
+164.538381
+158.876975
+158.087379
+162.296968
+153.438603
+153.906205
+149.959260
+156.172565
+154.468132
+154.747927
+158.399668
+154.705064
+148.985204
+147.642884
+153.522555
+155.391116
+158.985942
+150.252079
+160.179958
+152.030407
+159.749510
+158.054125
+150.416015
+148.142506
+147.445153
+</pre><img vspace="5" hspace="5" src="EIS_Analysis_128.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_129.png" alt=""> <h2 id="30">10.1 MB PLOTS</h2><p>Define x and y variables</p><img vspace="5" hspace="5" src="EIS_Analysis_130.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_131.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_132.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_133.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_134.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_135.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_136.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_137.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_138.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_139.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_140.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_141.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_142.png" alt=""> <h2 id="32">RUN PEIS PROCEDURE</h2><h2 id="34">6. PEIS</h2><img vspace="5" hspace="5" src="EIS_Analysis_78.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_79.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_80.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_81.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_82.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_83.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_84.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_85.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_86.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_87.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_88.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_89.png" alt=""> <h2 id="35">9. PEIS (Default view)</h2><img vspace="5" hspace="5" src="EIS_Analysis_90.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_91.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_92.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_93.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_94.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_95.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_96.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_97.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_98.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_99.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_100.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_101.png" alt=""> <h2 id="36">9. PEIS (Zoomed View)</h2><img vspace="5" hspace="5" src="EIS_Analysis_102.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_103.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_104.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_105.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_106.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_107.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_108.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_109.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_110.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_111.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_112.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_113.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_114.png" alt=""> <h2 id="38">RUN GCPL PROCEDURE</h2><h2 id="40">11. GCPL</h2><p>Define x and y variables</p><img vspace="5" hspace="5" src="EIS_Analysis_143.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_144.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_145.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_146.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_147.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_148.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_149.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_150.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_151.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_152.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_153.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_154.png" alt=""> <img vspace="5" hspace="5" src="EIS_Analysis_155.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% EIS Detailed Summary
+% This document contains the Carbon-Lignen Phase 2 summary graphs and data
+% analysis. 
+function[] = EIS_Analysis()
+% This serves as the main function will run both the plotting and data
+% analysis functions for all steps run on the VMP-3e. 
+
+    % Local variables
+    %   nNumOfReplicates    The number of replicates input by the user
+    %   currentFileLocation The fullpath of this file
+    %   pathstr             The fileparts of the currentFileLocation
+    %                           excluding the file name
+    %   dataFolder          The "Data" file path appended to the end of the
+    %                           data folder
+    %   replicateNames      The names of the replicate folders 
+    %   replicateList       The files located inside the Data folder
+    %   sDataType           String; The type of data analysis we will
+    %                           perform
+    %   xVar                String; The x variable to be plotted
+    %   yVar                String; The y variable to be plotted
+
+    % Intiailize the plot titles array VERY IMPORTANT
+    asPlotTitles = []; 
+
+    % Initialize Data file
+    sDataFile = "EISData"; 
+
+    % Prompt user for necessary data
+    % Prompt the user for the data type
+%     sDataType = getDataType();
+    sDataType = "ALL123"; 
+
+    % Get the number of replicates from the user
+%     nNumOfReplicates = getNumberOfReplicates(); 
+    nNumOfReplicates = 3; 
+
+    % Open up the data folder
+    % Get the path of the current file
+    currentFileLocation = mfilename("fullpath");
+
+    % Get file parts of the current file
+    [pathstr, ~, ~] = fileparts( currentFileLocation );
+    
+    % Append the data folder location to the end of the pathstr
+    dataFolder = fullfile(pathstr, sDataFile); 
+
+    % Look at all the replicate folders
+    replicateList = dir(fullfile(dataFolder, "*")); 
+    replicateNames = {replicateList.name}.'; 
+    replicateNames = replicateNames(3:end); % we go from 3:end bc it always includes '.' & '..' at the beginning
+
+    % Switch to the correct procedure
+    switch sDataType
+        case "LSV"
+            runLSVProcedure(dataFolder, nNumOfReplicates, replicateNames);
+        case "OCV"
+            runOCVProcedure(dataFolder, nNumOfReplicates, replicateNames); 
+        case "MB"
+            runMBProcedure(dataFolder, nNumOfReplicates, replicateNames); 
+        case "PEIS"
+            runPEISProcedure(dataFolder, nNumOfReplicates, replicateNames);
+        case "CA"
+            runCAProcedure(dataFolder, nNumOfReplicates, replicateNames); 
+        case "GCPL"
+            runGCPLProcedure(dataFolder, nNumOfReplicates, replicateNames); 
+        case "ALL123"
+            asPlotTitles = runOCVProcedure(dataFolder, nNumOfReplicates, replicateNames, asPlotTitles); 
+            asPlotTitles = runCAProcedure(dataFolder, nNumOfReplicates, replicateNames, asPlotTitles); 
+            asPlotTitles = runLSVProcedure(dataFolder, nNumOfReplicates, replicateNames, asPlotTitles); 
+            asPlotTitles = runPEISProcedure(dataFolder, nNumOfReplicates, replicateNames, asPlotTitles);
+            asPlotTitles = runMBProcedure(dataFolder, nNumOfReplicates, replicateNames, asPlotTitles); 
+            asPlotTitles = runGCPLProcedure(dataFolder, nNumOfReplicates, replicateNames, asPlotTitles); 
+        otherwise
+            fprintf(">:( wut r u doing try again\n");
+    end
+
+end
+
+function[ sDataType ] = getDataType()
+% This function gets the data type we are looking at. For example, LSV,
+% AC, etc
+% Input
+% 
+% Output
+%   sDataType       The type of data analsis we will be doing
+
+    % Local Variable 
+    % 
+
+    % Prompt the user for the number of files there 
+    sDataType = input("Please input what kind of analysis we will be performing: ", "s"); 
+end
+
+function[ nNumOfReplicates ] = getNumberOfReplicates()
+% This function will ask the user for the number of replicates - i.e., the
+% number of files they will be giving us. 
+
+% Input
+% 
+% Output
+%   nNumOfReplicates        This variable tracks the number of replicates
+%                               that the user will be plotting
+
+    % Local Variables
+    %   prompt          The prompt for the question
+
+    % Write prompt 
+    prompt = "Enter the number of replicates you will be inputting: ";
+
+    % Ask user for input
+    nNumOfReplicates = input(prompt); 
+end
+
+function[ xVar, yVar ] = getVariables(asOptions)
+% getVariables will ask the user for 2 variables they want to see plotted. 
+% Input
+%   asOptions       Strucutre; the options available for picking
+% Output
+% xVar      The x variable
+% yVar      The y variable
+
+    % Local Variables
+    %
+    
+    % Explain to the user what is happening
+    fprintf("Your options for variables are: \n")
+%     fprintf("'mode', 'ox/red', 'error', 'control changes', 'time/s', 'control/V', 'Ewe/V', 'I/mA/g', '(Q-Qo)/c', 'I range', 'P/W'\n")
+    disp(asOptions);
+    fprintf("Note that the variable names are case sensitive. \n")
+
+    % Prompt the user for the variables
+    xVar = input("Please enter the x-variable: ", "s");
+    yVar = input("Please enter the y-variable: ", "s");
+end
+
+function[ fCharMass ] = getCharacteristicMass(fullTxtFileDirectory)
+% This function will look through the text file and find the line that
+% contains the line "Characteristic mass." It then extracts the mass
+% recorded by the software. 
+% Input
+%   fullExcelFileDirectory  String; the complete path to the file
+% Output 
+%   fCharMass               The characteristic mass stored within the file
+
+    % Local Variables
+    %   lines           The lines of the passed text file
+    %   bFound          Boolean variable which indicates whether we have
+    %                       found the line that contains the phrase
+    %                       "Characteristic mass"
+    %   sCharMass       String variable that contains the characteristic
+    %                       mass
+    %   fCharMass       Float that contains the characteristic mass
+
+    % Read in the file line-by-line
+    % Getting the characteristic mass 
+    lines = readlines(fullTxtFileDirectory); 
+    
+    % Look through every line for the phrase "characteristic mass"
+    bFound = 0; 
+    iLine = 1; 
+    while iLine < length(lines) && ~bFound
+        if contains(lines(iLine), "Characteristic mass :")
+            % Set characteristic mass to found
+            bFound = 1; 
+            
+            % Access the line and split at the :  
+            sCharMass = strsplit(lines(iLine), ' : '); 
+            sCharMass = sCharMass(2); 
+
+            % Split after the space
+            sCharMass = strsplit(sCharMass, ' '); 
+
+            % Turn that into a number
+            fCharMass = str2double(sCharMass(1)); 
+        end
+        % Iterate the iLine variable
+        iLine = iLine + 1; 
+    end
+
+end
+
+function[ nFigNum, asPlotTitles ] = checkAvailability(asPlotTitles, sNewPlotTitle)
+% The checkAvailability function will take in an array of strings which are
+% all of the plot titles and a potentially new plot title. It will check if
+% that new plot title already exists within the array. If it does, then
+% bAvailable is false. 
+% Input
+%   asPlotTitles        Array of strings; Plot titles
+%   sNewPlotTitle       String; The "new plot" title that we will check
+% Output
+%   bAvailable      Boolean value; 1 if plot title is not in array, 0
+%                       otherwise
+%   nFigNum         The appropriate figure number
+
+    % Local Variables
+    %   iTitle          Iterator; the index of the plot title (only used if
+    %                       plot title has been used before)
+    %   currentTitle    string; the current title being compared against
+    %                       sNewPlotTitle
+
+    % Initialize bAvailable to "new plot"
+    bAvailable = 1;  
+
+    % Convert sNewPlotTitles to a string
+    sNewPlotTitle = string(sNewPlotTitle); 
+
+    % First check if asPlotTitles is empty
+    if isempty(asPlotTitles)
+        nFigNum = 1; 
+        asPlotTitles = [sNewPlotTitle]; 
+    else
+        % If it is not empty, check to see if sNewPlotTitle exists already
+        % If sNewPlotTitle does not contain the new plot title, add it
+        if ~any(strcmp(asPlotTitles, sNewPlotTitle))
+            % Add the new plot title
+            asPlotTitles = [asPlotTitles sNewPlotTitle];
+            nFigNum = length(asPlotTitles); 
+        % If sNewPlotTitle DOES contain the plot title, find its index
+        else
+            % Find the index of sNewPlotTitle
+            iTitle = 1; 
+            while iTitle <= length(asPlotTitles) && bAvailable
+                currentTitle = asPlotTitles(iTitle); 
+                if currentTitle == sNewPlotTitle
+                    bAvailable = 0; 
+                    nFigNum = iTitle; 
+                end
+                iTitle = iTitle + 1; 
+            end
+        end
+    end
+end
+
+function[sTitle] = getFormulaName(sFilePrefix)
+% This function will take in a file prefix and return the title of the
+% graph which should be its corresponding formula. 
+% Input
+%   sFilePrefix     String; the file prefix
+% Output
+%   sTitle          string; the title of the graph (formula name)
+
+    % Local Variable
+    %   
+
+    % Get the title name based on the sFilePrefix
+    switch sFilePrefix
+        case "AD"
+            sTitle = 'Control-4'; 
+        case "BC"
+            sTitle = 'ABG1010 : PBX-51 (1:2)'; 
+        case "CC"
+            sTitle = 'ABG1010 : PBX-51 (1:1)'; 
+        case "DC"
+            sTitle = 'ABG1010 : PBX-51 : BD (2:4:1)'; 
+        case "EC"
+            sTitle = 'ABG1010 : MX15-P50 (1:1)'; 
+        case "JL"
+            sTitle = 'MX15-PB50 Low'; 
+        case "FC"
+            sTitle = 'Kappa 240 : PBX-51 (1:1)'; 
+        case "GC"
+            sTitle = 'Kappa 240 : MX15-P50 (1:1)'; 
+        case "MO"
+            sTitle = 'MO'; 
+        case 'MT'
+            sTitle = 'MT'; 
+        case "AH"
+            sTitle = "Van-HT High (Control)"; 
+        case "AL"
+            sTitle = "Van-HT Low"; 
+        case "BH"
+            sTitle = "Van-A High"; 
+        case "BL"
+            sTitle = "Van-A Low"; 
+        case "CH"
+            sTitle = "Van-DCA High";
+        case "CL"
+            sTitle = "Van-DCA Low"; 
+        case "DH"
+            sTitle = "Van-A + Indulin High"; 
+        case "DL"
+            sTitle = "Van-A + Indulin Low";
+        case "EH"
+            sTitle = "S-Drill CL High";
+        case "EL"
+            sTitle = "S-Drill CL Low"; 
+        case "FH"
+            sTitle = "Indulin AT High"; 
+        case "FL"
+            sTitle = "Indulin AT Low";
+        otherwise
+            sTitle = 'Naming convention error'; 
+    end
+end
+
+function[nSteps] = getNumberOfSteps(fullTxtFileDirectory)
+% This function will count the number of steps present for each formula. 
+% Input
+%
+% Output
+%
+
+    % Local Vairables
+    % bCountedAllSteps  Boolean var that checks if all steps are counted; 0
+    %                       if there are more, 1 if they are all counted
+
+    % Look at the replicate folder
+    textData = dir(fullfile(fullTxtFileDirectory, "*.txt")); 
+    textNames = {textData.name}.'; 
+
+    % Get the first 2 letters of the formula 
+    firstFormula = textNames{1}; 
+    sPrefix = firstFormula(1:2); 
+
+    % Count the number of times it appears in the folder
+    nSteps = 0; 
+    for iTextFile = 1 : length(textNames)
+        if contains(textNames{iTextFile}, sPrefix)
+            nSteps = nSteps + 1; 
+        end
+    end
+
+end
+
+function[acFilePrefixes] = getFolderPrefixes(fullTxtFileDirectory)
+% This function returns a cell array of the file prefixes 
+% Input
+%
+% Output
+%
+
+    % Local Variables
+    %
+
+
+    % Get the file names
+    textData = dir(fullfile(fullTxtFileDirectory, "*.txt")); 
+    textNames = {textData.name}.'; 
+
+    % Initialize acFilePrefixes
+    acFilePrefixes = {}; 
+
+    % Store every prefix in a cell array
+    iCounter = 1; 
+    for iTextFile = 1 : length(textNames)
+        % Get the text name
+        chFileName = textNames{iTextFile}; 
+
+        % Get the prefix 
+        sPrefix = chFileName(1:2); 
+
+%         ~any(cellfun(@(x) isequal(x, sPrefix), acFilePrefixes))
+
+        % Check if it already exists
+        if ~any(cellfun(@(x) isequal(x, sPrefix), acFilePrefixes))
+            % store it
+            acFilePrefixes{iCounter} = sPrefix; 
+
+            % Iterate counter
+            iCounter = iCounter + 1; 
+        end
+    end
+
+end
+
+function[asPlotTitles] = runGeneralReplicatePlot(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, sXLabel, sYLabel, nStepNumber, asPlotTitles, zoom)
+% This function will run the general replicate algorithm. This is mean to
+% not only decrease the lines of code, but improve efficiency. 
+% Input
+%   sDataType           String; the data we are looking at
+%   dataFolder          The "Data" file path appended to the end of the
+%                           data folder
+%   nNumOfReplicates    The number of replicates 
+%   replicateNames      The names of the replicate folders 
+%   VariableNames       structure; the variable names for the data
+%   xVar                The x variable of interest
+%   yVar                The y variable of interest
+%   sXLabel             String; the x label
+%   sYLabel             String; the y label
+%   nStepNumber         String; the step number we are on
+%   asPlotTitles        string array; All the plot titles (constantly
+%                           updated)
+% Output
+%   asPlotTitles        string array; all the plot titles (constantly
+%                           updated)
+
+    % Local variables
+    %   replicateDirectory  String; Path of replicate iReplicate in the
+    %                           data folder
+    %   textData            Directory of all text files inside Replicate#
+    %   textNames           The names of the excel files inside the
+    %                           replicate
+    %   nNumOfTxtFiles      The number of text files in the replicate
+    %                           folder
+    %   currentTextFilePath String; stores the path of the current txt file
+    %   sFilePrefix         string; the first 2 letters of the file name
+    %                           which provide info about the carbon
+    %   sCupID              string; Current cup ID
+    %   nCurrentStepNumber  Int; the step number in integer form
+    %   sGraphTitle         String; The graph title 
+    % fullTextFileDirectory String; The full text file path
+    %   nFigNum             The figure number where the data will be
+    %                           plotted
+    %   rawTable            The data read in from the tab-delimitted text
+    %                          file
+    %   x                   The x-variable data
+    %   y                   The y-variable data
+    %   fCharMass           float; characteristic mass (not always included)
+
+    arguments
+        sDataType string
+        dataFolder string
+        nNumOfReplicates double
+        replicateNames(:, :) cell
+        VariableNames cell
+        xVar string
+        yVar string
+        sXLabel string
+        sYLabel string
+        nStepNumber double
+        asPlotTitles(1, :) string
+        zoom double {mustBeInteger} = 0
+    end
+
+
+    % Loop through every replicate number folder in the data folder
+    iReplicate = 1; 
+    while iReplicate <= nNumOfReplicates
+        % Obtain the replicate directory
+        replicateDirectory = fullfile(dataFolder, replicateNames(iReplicate));
+
+        % Get all of the excel file names
+        textData = dir(fullfile(replicateDirectory, "*.txt")); 
+        textNames = {textData.name}.'; 
+
+        % Store the number of the excel files the replicate folder has
+        nNumOfTextFiles = length(textNames); 
+
+        % Loop through every excel file in the current replicate folder
+        for iTextFile = 1 : nNumOfTextFiles
+            % Store path name
+            currentTextFilePath = textNames{iTextFile}; 
+
+            % Perform some file validation
+            if contains(currentTextFilePath, sDataType)
+                % Get the first two letters of the excel file
+                sFilePrefix = currentTextFilePath(1:2); 
+
+                % Get the cupID 
+                sCupID = currentTextFilePath(1:4); 
+
+                % Get the Step  Number
+                asSplitString = split(currentTextFilePath, "_");
+                nCurrentStepNumber = str2num(asSplitString{2}); 
+                
+                % Create a graph title
+                sGraphTitle = sDataType + " (Step " + num2str(nStepNumber) + ") : " +  getFormulaName(sFilePrefix) ;
+
+                % Check to see if this graph title is available for usre
+                [nFigNum, asPlotTitles] = checkAvailability(asPlotTitles, sGraphTitle); 
+
+                % Store full file directory
+                fullTextFileDirectory = fullfile(replicateDirectory, currentTextFilePath); 
+
+                % Load in data
+                rawTable = readtable(fullTextFileDirectory, VariableNamingRule="preserve"); 
+
+                % Change variable names
+                rawTable.Properties.VariableNames = VariableNames;
+                
+                % Switch between steps
+                % OCV (Steps 1 and 3)
+                if (nStepNumber == 1) && nStepNumber == nCurrentStepNumber
+                    % Get the x and y data
+                    x = rawTable.(xVar); 
+                    y = rawTable.(yVar); 
+                    
+                    % Restart time 
+                    x = x - x(1); 
+
+                    % Plot this 
+                    figure(nFigNum)
+                    hold on; 
+                    plot(x, y, "DisplayName", sCupID)
+
+                    % Change scale of step number 3
+                    if nStepNumber == 3
+                        ylim_curr = get(gca, 'ylim'); 
+                        ylim_curr(1) = -1.1; 
+                        set(gca, 'ylim', ylim_curr); 
+                    end
+
+                    xlabel(sXLabel)
+                    ylabel(sYLabel)
+                    title(sGraphTitle)
+                    legend('Location', 'best')
+
+                % CA (Step 2)
+                elseif nStepNumber == 2 && nStepNumber == nCurrentStepNumber
+                    % Get the x and y data
+                    x = rawTable.(xVar); 
+                    y = rawTable.(yVar);
+                    
+                    % Convert to hours
+                    x = x / 3600; 
+
+                    % Plot this 
+                    figure(nFigNum)
+                    hold on; 
+                    plot(x, y, "*", "DisplayName", sCupID)
+                    xlabel(sXLabel)
+                    ylabel(sYLabel)
+                    title(sGraphTitle)
+                    legend('Location', 'best');
+
+                % OCV (Step 3)
+                elseif (nStepNumber == 3 ) && nStepNumber == nCurrentStepNumber
+                    % Get the x and y data
+                    x = rawTable.(xVar); 
+                    y = rawTable.(yVar); 
+                    
+                    % Restart time 
+                    x = x - x(1); 
+
+                    % Convert to hours
+                    x = x / 3600; 
+
+                    % Plot this 
+                    figure(nFigNum)
+                    hold on; 
+                    plot(x, y, "DisplayName", sCupID)
+
+                    % Change scale of step number 3
+                    if nStepNumber == 3
+                        ylim_curr = get(gca, 'ylim'); 
+                        ylim_curr(1) = -1.1; 
+                        set(gca, 'ylim', ylim_curr); 
+                    end
+
+                    xlabel(sXLabel)
+                    ylabel(sYLabel)
+                    title(sGraphTitle)
+                    legend('Location', 'best')
+
+                % LSV (Step 4)
+                elseif nStepNumber == 4 && nStepNumber == nCurrentStepNumber
+                    % Get the characteristic mass
+                    fCharMass = getCharacteristicMass(fullTextFileDirectory);
+
+                    % Get the x and y data
+                    x = rawTable.(xVar); 
+                    y = rawTable.(yVar) / fCharMass; 
+
+                    % Plot this 
+                    figure(nFigNum)
+                    hold on; 
+%                     plots = plot(x, y, "DisplayName", sCupID);
+                    plot(x, y, "DisplayName", sCupID);
+%                     vertLine = xline(-1.5, LineStyle='REPLACE_WITH_DASH_DASH', color='k'); 
+%                     vertLine.DisplayName = '';
+                    xlabel(sXLabel)
+                    ylabel(sYLabel)
+                    title(sGraphTitle)
+%                     lgd = legend(plots, 'FontSize', 10, "Location", "best");
+                    legend('Location', 'best'); 
+                    
+
+                % OCV (Steps 5 and 8)    
+                elseif (nStepNumber == 5 || nStepNumber == 8) && nCurrentStepNumber == nStepNumber
+                    % Get the x and y data
+                    x = rawTable.(xVar); 
+                    y = rawTable.(yVar);
+
+                    % Reset time to 0
+                    x = x - x(1); 
+
+                    % Convert x data to hrs
+                    x = x / 3600; 
+
+                    % Plot this 
+                    figure(nFigNum)
+                    hold on; 
+                    plot(x, y, "DisplayName", sCupID)
+
+                    % Change scale of step number 5
+                    if nStepNumber == 5
+                        ylim_curr = get(gca, 'ylim'); 
+                        ylim_curr(1) = -1.1; 
+                        set(gca, 'ylim', ylim_curr); 
+                    end
+
+                    xlabel(sXLabel)
+                    ylabel(sYLabel)
+                    title(sGraphTitle)
+                    legend('Location', 'best');
+
+                % PEIS (Step 6 and 9)
+                elseif (nStepNumber == 6 || nStepNumber == 9) && nCurrentStepNumber == nStepNumber && zoom == 0
+                    % Get the x and y data
+                    x = rawTable.(xVar); 
+                    y = rawTable.(yVar);
+
+                    % Plot this 
+                    figure(nFigNum)
+                    hold on; 
+                    plot(x, y, "*", "DisplayName", sCupID)
+                 
+                    % Label plots
+                    xlabel(sXLabel)
+                    ylabel(sYLabel)
+                    title(sGraphTitle)
+                    legend('Location', 'best');
+
+                % PEIS (Step 9, zoomed)
+                elseif nStepNumber == 9 && nCurrentStepNumber == nStepNumber && zoom == 1
+                    % Get the x and y data
+                    x = rawTable.(xVar); 
+                    y = rawTable.(yVar);
+
+                    % Add zoomed in plots for step 9
+                    sGraphTitle = sGraphTitle + " (Zoomed in)"; 
+                    [nFigNum, asPlotTitles] = checkAvailability(asPlotTitles, sGraphTitle); 
+
+                    figure(nFigNum)
+                    hold on; 
+                    plot(x, y, "*", "DisplayName", sCupID)
+                    axis([0 5 -0.5 4.5])
+                    xticks('auto')
+                    xticklabels('auto')
+                    
+
+                    % Label plots
+                    xlabel(sXLabel)
+                    ylabel(sYLabel)
+                    title(sGraphTitle)
+                    legend('Location', 'best');
+                 
+                % MB (Step 7)
+                elseif nStepNumber == 7 && nStepNumber == nCurrentStepNumber
+                    % Get the characteristic mass
+                    fCharMass = getCharacteristicMass(fullTextFileDirectory);
+
+                    % Get the x and y data
+                    x = rawTable.(xVar) / fCharMass; 
+                    y = rawTable.(yVar); 
+                    
+                    % This is often plotted to seconds 
+                    figure(nFigNum)
+                    hold on; 
+                    plot(x, y, "DisplayName", sCupID)
+                    set(gca, 'Ydir', 'reverse')
+                    xlabel(sXLabel)
+                    ylabel(sYLabel)
+                    title(sGraphTitle); 
+                    legend('Location', 'best');
+
+                % MB (Step 10)
+                elseif nStepNumber == 10 && nStepNumber == nCurrentStepNumber
+                    % Get the x and y data
+                    x = rawTable.(xVar); 
+                    y = rawTable.(yVar); 
+
+                    % Restart time
+                    x = x - x(1); 
+
+                    % Convert to hours
+                    x = x / 3600; 
+
+                    % This will be plotted in seconds
+                    figure(nFigNum); 
+                    hold on; 
+                    plot(x, y, '*', 'DisplayName', sCupID)
+                    xlabel(sXLabel)
+                    ylabel(sYLabel)
+                    title(sGraphTitle); 
+                    legend('Location', 'best'); 
+
+                elseif nStepNumber == 11 && nStepNumber == nCurrentStepNumber
+                    % Get the x and y data
+                    x = rawTable.(xVar); 
+                    y = rawTable.(yVar); 
+
+                    % Restart time
+                    x = x - x(1); 
+
+                    % Transform to hours
+                    x = x / 3600; 
+
+                    % Plot this
+                    figure(nFigNum)
+                    hold on; 
+                    plot(x, y, '.', DisplayName=sCupID)
+                    xlabel(sXLabel)
+                    ylabel(sYLabel)
+                    title(sGraphTitle)
+                    legend('Location', 'best'); 
+                end
+            end
+        end
+        hold off; 
+
+        % Look at the next replicate
+        iReplicate = iReplicate + 1; 
+    end
+end
+
+function[replicateData] = readInData(dataFolder, nNumOfReplicates, replicateNames, VariableNames, nProcess, xVar, yVar)
+% This function will assist in reading in the data and creating a structure
+% that can be used for our data analysis processes. The output of this
+% function IS SPECIFIC TO THE PROCESS THAT IS BEING CALLED. E.g, if called
+% for the LSV file, it will read in the data that is important to the LSV
+% file.  
+% Input
+%   dataFolder          The "Data" file path appended to the end of the
+%                           data folder
+%   nNumOfReplicates    The number of replicates 
+%   replicateNames      The names of the replicate folders 
+%   VariableNames       The variable names corresponding to the specific
+%                           data analysis process we are performing
+%   nProcess            Int; the process we are performing
+% Output 
+%   dataStructure       data structure containing all data of the form: 
+%       .replicate().step().key().dat
+%       .replicate().step().key().fullCupID
+
+    % Local Variable
+    %   cupKey              Container which has "AA" : 1 key value pairs where the
+    %                           key is the cup prefix and value is the counter
+    %                           variable associated with it
+    %   replicateDirectory  The replicate directory with all the files
+    %   
+    
+    % Initialize the number of steps
+    nSteps = 12; 
+
+    % Record the sFilePrefix into a dictionary
+    cupDict = dictionary(); 
+%     cupKey = containers.Map; 
+    counter = 1; 
+
+    % Look at the names of the files in replicate 1 folder
+%     replicateDirectory = fullfile(dataFolder, 'Replicate 1');
+    replicateDirectory = fullfile(dataFolder, replicateNames{1});
+
+    % Get all of the excel file names
+    textData = dir(fullfile(replicateDirectory, "*.txt")); 
+    textNames = {textData.name}.'; 
+
+    % Store the number of the excel files the replicate folder has
+    nNumOfTextFiles = length(textNames); 
+
+    % Loop through every txt file and record the cup prefixes
+    for iTextFile = 1 : nNumOfTextFiles
+        % Store path name
+        currentTextFilePath = textNames{iTextFile}; 
+
+        % Get the file prefix 
+        sFilePrefix = currentTextFilePath(1:2); 
+
+        % Check to see if this is already in the dictionary
+        if ~isConfigured(cupDict)
+            alreadyExists = 0;
+        else
+            alreadyExists = any(cupDict.keys == sFilePrefix); 
+        end
+
+        if ~alreadyExists
+            cupDict(sFilePrefix) = counter; 
+            counter = counter + 1; 
+        end
+
+    end
+    
+    % Get the number of cup keys
+    nCupKeys = length(cupDict.keys);
+
+    % Create the data structure
+    for iReplicate = 1 : nNumOfReplicates
+        % Obtain the replicate directory
+        replicateDirectory = fullfile(dataFolder, replicateNames(iReplicate));
+
+        % Get all of the excel file names
+        textData = dir(fullfile(replicateDirectory, "*.txt")); 
+        textNames = {textData.name}.'; 
+
+        % Store the number of the excel files the replicate folder has
+        nNumOfTextFiles = length(textNames);
+
+        % Get the number of steps 
+        nSteps = getNumberOfSteps(replicateDirectory); 
+
+        % Store the number of formulas
+        replicateData(iReplicate).nNumOfFormulas = length(textNames) / nSteps;
+
+        % Loop through every excel file in the current replicate folder
+        for iTextFile = 1 : nNumOfTextFiles
+            % Store path name
+            currentTextFilePath = textNames{iTextFile};
+
+            % Get the Step  Number
+            asSplitString = split(currentTextFilePath, "_");
+            nCurrentStepNumber = str2num(asSplitString{2});
+            
+            if nCurrentStepNumber == nProcess
+                % Get the file prefix
+                sFilePrefix = currentTextFilePath(1:2); 
+    
+                % Store full file directory
+                fullTextFileDirectory = fullfile(replicateDirectory, currentTextFilePath); 
+    
+                % Load in data
+                rawTable = readtable(fullTextFileDirectory, VariableNamingRule="preserve");
+
+                % Change variable names
+                rawTable.Properties.VariableNames = VariableNames; 
+
+                % Adjust data if needed
+                % Switch between steps
+                % OCV (Steps 1 and 3)
+                if (nProcess == 1) && nProcess == nCurrentStepNumber
+                    % Get the x and y data
+                    x = rawTable.(xVar); 
+                    y = rawTable.(yVar); 
+                    
+                    % Restart time 
+                    x = x - x(1); 
+
+                % CA (Step 2)
+                elseif nProcess == 2 && nProcess == nCurrentStepNumber
+                    % Get the x and y data
+                    x = rawTable.(xVar); 
+                    y = rawTable.(yVar);
+                    
+                    % Convert to hours
+                    x = x / 3600; 
+
+                % OCV (Step 3)
+                elseif (nProcess == 3) && nProcess == nCurrentStepNumber
+                    % Get the x and y data
+                    x = rawTable.(xVar); 
+                    y = rawTable.(yVar); 
+                    
+                    % Restart time 
+                    x = x - x(1); 
+
+                    % Convert to hours
+                    x = x / 3600; 
+
+                % LSV (Step 4)
+                elseif nProcess == 4 && nProcess == nCurrentStepNumber
+                    % Get the characteristic mass
+                    fCharMass = getCharacteristicMass(fullTextFileDirectory);
+
+                    % Get the x and y data
+                    x = rawTable.(xVar); 
+                    y = rawTable.(yVar) / fCharMass; 
+
+                % OCV (Steps 5 and 8)    
+                elseif (nProcess == 5 || nProcess == 8) && nCurrentStepNumber == nProcess
+                    % Get the x and y data
+                    x = rawTable.(xVar); 
+                    y = rawTable.(yVar);
+
+                    % Reset time to 0
+                    x = x - x(1); 
+
+                    % Convert x data to hrs
+                    x = x / 3600; 
+
+                % PEIS (Step 6 and 9)
+                elseif (nProcess == 6 || nProcess == 9) && nCurrentStepNumber == nProcess
+                    % Get the x and y data
+                    x = rawTable.(xVar); 
+                    y = rawTable.(yVar);
+
+                % MB (Step 7)
+                elseif nProcess == 7 && nProcess == nCurrentStepNumber
+                    % Get the characteristic mass
+                    fCharMass = getCharacteristicMass(fullTextFileDirectory);
+
+                    % Get the x and y data
+                    x = rawTable.(xVar) / fCharMass; 
+                    y = rawTable.(yVar); 
+
+                % MB (Step 10)
+                elseif nProcess == 10 && nProcess == nCurrentStepNumber
+                    % Get the x and y data
+                    x = rawTable.(xVar); 
+                    y = rawTable.(yVar); 
+
+                    % Restart time
+                    x = x - x(1); 
+
+                    % Convert to hours
+                    x = x / 3600; 
+                end
+
+                % Get the all the prefixes
+                acFilePrefixes = getFolderPrefixes(replicateDirectory); 
+        
+                % Store every ounce of data
+                replicateData(iReplicate).Step(nCurrentStepNumber).Key(cupDict(sFilePrefix)).dat = [x y]; 
+                replicateData(iReplicate).Step(nCurrentStepNumber).Key(cupDict(sFilePrefix)).formula = getFormulaName(sFilePrefix); 
+                replicateData(iReplicate).Step(nCurrentStepNumber).Key(cupDict(sFilePrefix)).acFilePrefixes = acFilePrefixes; 
+                replicateData(iReplicate).Step(nCurrentStepNumber).Key(cupDict(sFilePrefix)).cupID = currentTextFilePath(1:4); 
+                replicateData(iReplicate).Step(nCurrentStepNumber).Key(cupDict(sFilePrefix)).amountOfX = length(x);
+                replicateData(iReplicate).Step(nCurrentStepNumber).Key(cupDict(sFilePrefix)).amountOfY = length(y);
+            end
+        end
+    end
+
+end
+
+%% RUN OCV PROCEDURE
+function[asPlotTitles] = runOCVProcedure(dataFolder, nNumOfReplicates, replicateNames, asPlotTitles)
+% The runOCVProcedure will take in the varaibles we want to plot, the
+% dataFolder, the number of replicates as well as their names. The function
+% will also differentiate at what step of the OCV we are looking at. 
+% Input
+%   dataFolder          The "Data" file path appended to the end of the
+%                           data folder
+%   nNumOfReplicates    The number of replicates 
+%   replicateNames      The names of the replicate folders 
+%   asPlotTitles        string array; All the plot titles (constantly
+%                           updated)
+% Output
+%   asPlotTitles        string array; all the plot titles (constantly
+%                           updated)
+
+
+    % Local Variable
+    %   sDataType           String; the data we are looking at
+    %   xVar                String; the x-variable we want plotted
+    %   yVar                String; the y-variable we want plotted
+    %   sXLabel             String; the x label
+    %   sYLabel             String; the y label
+    %   VariableNames       structure; the variable names for the data
+
+    % Set datatype
+    sDataType = "OCV";
+
+    % Define Variable Names 
+    VariableNames = {'mode', 'error', 'time', 'Ewe/V'};
+
+%     hold off; 
+    %% 1. OCV
+    % Define nProcess 
+    nProcess = 1; 
+
+    % Define x and y termas  
+    xVar = 'time'; 
+    yVar = 'Ewe/V'; 
+
+    % Define x and y labels
+    sXLabel = 'Time (s)'; 
+    sYLabel = 'Potential (V)'; 
+    asPlotTitles = runGeneralReplicatePlot(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, sXLabel, sYLabel, 1, asPlotTitles); 
+
+    %% 1. OCV Averages 
+    asPlotTitles = runOCVDataAnalysis(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, asPlotTitles, nProcess, sXLabel, sYLabel);
+
+    hold off; 
+    %% 3. OCV
+    % Define nProcess
+    nProcess = 3; 
+
+    % Define x and y termas  
+    xVar = 'time'; 
+    yVar = 'Ewe/V'; 
+
+    % Define x and y labels
+    sXLabel = 'Time (hrs)'; 
+    sYLabel = 'Potential (V)'; 
+    asPlotTitles = runGeneralReplicatePlot(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, sXLabel, sYLabel, 3, asPlotTitles);
+
+    %% 3. OCV Averages 
+    asPlotTitles = runOCVDataAnalysis(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, asPlotTitles, nProcess, sXLabel, sYLabel);
+
+    hold off; 
+    %% 5. OCV
+    % Define nProcess 
+    nProcess = 5; 
+
+    % Define x and y termas  
+    xVar = 'time'; 
+    yVar = 'Ewe/V'; 
+
+    % Define x and y labels
+    sXLabel = 'Time (hrs)'; 
+    sYLabel = 'Potential (V)'; 
+
+    asPlotTitles = runGeneralReplicatePlot(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, sXLabel, sYLabel, 5, asPlotTitles);
+
+    %% 5. OCV Averages 
+    asPlotTitles = runOCVDataAnalysis(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, asPlotTitles, nProcess, sXLabel, sYLabel);
+
+    hold off; 
+    %% 8. OCV
+    % Define nprocess 
+    nProcess = 8; 
+
+    % Define x and y termas  
+    xVar = 'time'; 
+    yVar = 'Ewe/V'; 
+
+    % Define x and y labels
+    sXLabel = 'Time (hrs)'; 
+    sYLabel = 'Potential (V)'; 
+    asPlotTitles = runGeneralReplicatePlot(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, sXLabel, sYLabel, 8, asPlotTitles);
+
+    %% 8. OCV Averages 
+    asPlotTitles = runOCVDataAnalysis(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, asPlotTitles, nProcess, sXLabel, sYLabel);
+
+    hold off; 
+end
+
+function[asPlotTitles] = runOCVDataAnalysis(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, asPlotTitles, nProcess, sXLabel, sYLabel)
+% This function will run the necessary data analysis process on the OCV
+% Step. 
+% Input
+%   nProcess        In this case, we will pass the step number into the
+%                       function bc we are performing the same analysis on 
+%                       4 different files (so we can't define the process
+%                       here)
+% Output
+% 
+   
+    % Local variables
+    %
+    
+
+    % Load the appropriate data into a data structure
+    data = readInData(dataFolder, nNumOfReplicates, replicateNames, VariableNames, nProcess, xVar, yVar);
+
+    % Average Plot
+    % Issue: Not all the replicates have the same amount of data
+
+    % Solution: Find the one with the lowest amount of data
+    
+    % Find and store the smallest set of data for each formula
+    for iFormula = 1 : length(data(1).Step(nProcess).Key)
+        shortest = inf; 
+        for iReplicate = 1 : nNumOfReplicates
+            % Find the smallest data set and use that
+            if data(iReplicate).Step(nProcess).Key(iFormula).amountOfX < shortest
+                whichShortest(iFormula).shortest = data(iReplicate).Step(nProcess).Key(iFormula).amountOfX;
+                shortest = data(iReplicate).Step(nProcess).Key(iFormula).amountOfX; 
+            end
+        end
+    end
+
+%     for iReplicate = 1 : nNumOfReplicates
+%         shortest = inf; 
+%         % Check if num of forms in rep 1 == num of forms in rep iReplicate
+%         if data(iReplicate).nNumOfFormulas == data(1).nNumOfFormulas % Compared to the first replica folder that appears
+%             for iFormula = 1 : data(iReplicate).nNumOfFormulas
+%                 if data(iReplicate).Step(nProcess).Key(iFormula).amountOfX < shortest
+%                     whichShortest(iFormula).shortest = data(iReplicate).Step(nProcess).Key(iFormula).amountOfX;
+%                     shortest = data(iReplicate).Step(nProcess).Key(iFormula).amountOfX; 
+%                 end
+%             end
+%         else
+%             
+%         end 
+%     end
+ 
+    % Plot the averages on one graph
+    % Create the plot title
+    sGraphTitle = sDataType + "(Step " + nProcess + ")"+ " Plot of Averages"; 
+
+    % Check to see if this graph title is available for use
+    [nFigNum, asPlotTitles] = checkAvailability(asPlotTitles, sGraphTitle);
+    figh = figure(nFigNum); 
+
+    % Hardcoded graph colors
+    colors = [[0, 0, 0]; [0, 1, 0]; [0, 0, 1]; [1, 0, 0]; [1, 0, 1]; [0, 1, 1]; [0, 0.5, 0]; [1, 0.6, 0]; [0, 128/255, 1]; [128/255, 0, 1]; [132/255, 186/255, 91/255]; [0.5, 0.5, 0.5]];
+
+    for iFormula = 1 : length(data(1).Step(nProcess).Key)
+        for iReplicate = 1 : nNumOfReplicates
+            % Get the shortest value
+            shortest = whichShortest(iFormula).shortest;
+
+            % Get the complete x and y data
+            x = data(iReplicate).Step(nProcess).Key(iFormula).dat(:, 1); 
+            y = data(iReplicate).Step(nProcess).Key(iFormula).dat(:, 2); 
+            
+            % Crop the data
+            xCropped = x(length(x) - shortest + 1: end); 
+            yCropped = y(length(y) - shortest + 1: end); 
+
+            % Get the cupID
+            sCupID = data(iReplicate).Step(nProcess).Key(iFormula).cupID; 
+
+            % Initialize avgX and avgY
+            if iReplicate == 1
+                sumX = zeros(size(xCropped)); 
+                sumY = zeros(size(yCropped)); 
+            end
+
+            sumX = sumX + xCropped;
+            sumY = sumY + yCropped;
+        end
+        
+        % Calculate the averages 
+        avgX = sumX / nNumOfReplicates; 
+        avgY = sumY / nNumOfReplicates; 
+        
+        % Plot the average values
+        hold on; 
+        plot(avgX, avgY, "DisplayName", getFormulaName(sCupID(1:2)), "Color", colors(iFormula, :))
+
+        % Change scale of step number 3
+        if nProcess == 3 || nProcess == 5
+            ylim_curr = get(gca, 'ylim'); 
+            ylim_curr(1) = -1.1; 
+            set(gca, 'ylim', ylim_curr); 
+        end
+
+        title(sGraphTitle)
+        xlabel(sXLabel)
+        ylabel(sYLabel)
+        legend('Location', 'best'); 
+    end
+
+    % Make figure bigger
+    pos = get(figh, 'position'); 
+    set(figh, 'position', [pos(1:2)/4 pos(3:4)*2])
+
+    hold off; 
+end
+
+%% RUN CA PROCEDURE
+function[asPlotTitles] = runCAProcedure(dataFolder, nNumOfReplicates, replicateNames, asPlotTitles)
+% The runCAProcedure will run analysis on the CA files in the data folder.
+% There is only one CA step which does require the header. We will plot
+% mA/g vs time (either in minutes or in hours). 
+
+% Input
+%   dataFolder          The "Data" file path appended to the end of the
+%                           data folder
+%   nNumOfReplicates    The number of replicates 
+%   replicateNames      The names of the replicate folders 
+%   asPlotTitles        string array; All the plot titles (constantly
+%                           updated)
+% Output
+%   asPlotTitles        string array; all the plot titles (constantly
+%                           updated)
+% Output
+
+    % Local Variable
+    %   sDataType           String; the data we are looking at
+    %   xVar                String; the x-variable we want plotted
+    %   yVar                String; the y-variable we want plotted
+    %   sXLabel             String; the x label
+    %   sYLabel             String; the y label
+    %   VariableNames       structure; the variable names for the data
+
+
+    % Set datatype 
+    sDataType = "CA"; 
+
+    % Define variable names
+    VariableNames = {'mode', 'ox/red', ...
+                    'error', 'control changes', 'NS changes', ...
+                    'counter inc.', 'Ns', 'time/s' 'control/V', 'Ewe/V',... 
+                    'I/mA', 'dQ/C', '(Q-Qo)/C', 'I Range', ...
+                    'Energy charge/W.h', 'Energy discharge/W.h', ...
+                    'Capacitance charge/mF', 'Capacitance discharge/mF', ...
+                    'Q discharge/mA.h', 'Q charge/mA.h', 'Capacity/mA.h', ...
+                    'Efficiency/%', 'cycle number', 'P/W'};
+
+    %% 2. CA
+    % Define x and y variables
+    xVar = 'time/s'; 
+    yVar = 'I/mA'; 
+
+    % Define x and y variable names
+    sXLabel = 'Time (hrs)';
+    sYLabel = 'Current (mA)'; 
+
+    asPlotTitles = runGeneralReplicatePlot(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, sXLabel, sYLabel, 2, asPlotTitles);
+end 
+
+%% RUN LSV PROCEDURE
+function[asPlotTitles] = runLSVProcedure(dataFolder, nNumOfReplicates, replicateNames, asPlotTitles)
+% The runCAProcedure will run analysis on the LSV files in the data folder.
+% It will plot and also perform the necessary data analysis on the data. In 
+% order th plot, it will call the runGeneralReplicatePlot function. 
+% Input
+%   dataFolder          The "Data" file path appended to the end of the
+%                           data folder
+%   nNumOfReplicates    The number of replicates 
+%   replicateNames      The names of the replicate folders 
+%   asPlotTitles        string array; All the plot titles (constantly
+%                           updated)
+% Output
+%   asPlotTitles        string array; all the plot titles (constantly
+%                           updated)
+% Output
+
+    % Local Variable
+    %   sDataType           String; the data we are looking at
+    %   xVar                String; the x-variable we want plotted
+    %   yVar                String; the y-variable we want plotted
+    %   sXLabel             String; the x label
+    %   sYLabel             String; the y label
+    %   VariableNames       structure; the variable names for the data
+
+    % Set datatype
+    sDataType = "LSV"; 
+
+    % Get the x-y data they want plotted 
+    VariableNames = {'mode', 'ox/red', 'error', 'control changes', 'time/s', ...
+                    'control/V', 'Ewe/V', 'I/mA/g', '(Q-Qo)/c', 'I range', 'P/W'}; 
+
+    % Define x and y variables
+    xVar = 'Ewe/V';
+    yVar = 'I/mA/g'; 
+
+    % Define x and y labels 
+    sXLabel = "Potential (V)"; 
+    sYLabel = "Current (mA/g)"; 
+
+
+    %% 4.1 LSV Plots
+    asPlotTitles = runGeneralReplicatePlot(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, sXLabel, sYLabel, 4, asPlotTitles);
+
+    for sPlotTitle = asPlotTitles
+        if contains(sPlotTitle, 'LSV (Step 4)')
+            [ nFigNum, ~ ] = checkAvailability(asPlotTitles, sPlotTitle);
+            figure(nFigNum)
+            vertLine = xline(-1.5, LineStyle='REPLACE_WITH_DASH_DASH', color='k'); 
+            vertLine.DisplayName = '-1.5V';
+        end
+    end
+            
+    %% 4.2 LSV Data analysis
+    % The data analysis that we want. This will also include some graphs
+    % and whatnot. 
+    asPlotTitles = runLSVDataAnalysis(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, asPlotTitles);
+end
+
+function[asPlotTitles]= runLSVDataAnalysis(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, asPlotTitles)
+% This function will run the main data analysis we are interested in for
+% the LSV function; 
+% Input
+%   xVar        Here, xVar is the Potential (Ewe/V)
+%   yVar        Here, yVar is the current (mA/g)
+% Output
+%
+
+    % Local Variables
+    %   nProcess        int; signifies step number in the process. For LSV,
+    %                       it is 4
+
+    % Initialize the current process number
+    nProcess = 4;    
+
+    % Intialize voltage of interest
+    fVoltage = -1.5;
+
+    % Load the appropriate data into a data structure
+    data = readInData(dataFolder, nNumOfReplicates, replicateNames, VariableNames, nProcess, xVar, yVar);
+
+    % Initialize the number of formulas
+    nNumFormulas = length(data(1).Step(nProcess).Key); 
+
+    % Create excel file to write to    
+
+    %% Find the current @ fVoltage for each replicate of every formula
+    % Create the excel file
+    fileName = 'EIS Results'; 
+    aafCurrantAtVoltageSummary = [nNumOfReplicates, nNumFormulas]; 
+
+    % Write detailed output of currents at the -1.5 Voltages
+    for iFormula = 1 : nNumFormulas
+        for iReplicate = 1 : nNumOfReplicates
+            % Store the current data
+            currentData = data(iReplicate).Step(nProcess).Key(iFormula).dat;
+
+            % Get the cupID
+            sCupID = data(iReplicate).Step(nProcess).Key(iFormula).cupID; 
+
+            % Get the formula Name
+            sFormulaName = data(iReplicate).Step(nProcess).Key(iFormula).formula;
+
+            % Get minValue and its index
+            [~, closestIndex] = min(abs(currentData(:, 1) - fVoltage));
+            
+            fprintf('Current at -1.5 V for formula %35s (Cup ID = %4s) of replicate %2d: %8.3f mA/g \n', sFormulaName, sCupID, iReplicate, currentData(closestIndex, 2))
+            fprintf('\n')
+
+            aafCurrantAtVoltageSummary(iReplicate, iFormula) = currentData(closestIndex, 2); 
+        end
+    end
+
+    % Write just numbers of currents at the -1.5 Voltages
+    for iFormula = 1 : nNumFormulas
+        for iReplicate = 1 : nNumOfReplicates
+            fprintf("%f\n", aafCurrantAtVoltageSummary(iReplicate, iFormula))
+        end
+    end
+
+    % Now find the average of every column
+    aafCurrantAtVoltageSummary(nNumOfReplicates + 1, :) = sum(aafCurrantAtVoltageSummary, 1) / nNumOfReplicates; 
+
+    % Find the standard deviation of every column 
+    aafCurrantAtVoltageSummary(nNumOfReplicates + 2, :) = std(aafCurrantAtVoltageSummary(1 : nNumOfReplicates, :)); 
+
+    % Find the relative standard deviation
+    aafCurrantAtVoltageSummary(nNumOfReplicates + 3, :) = abs(aafCurrantAtVoltageSummary(nNumOfReplicates + 2, :) ./ aafCurrantAtVoltageSummary(nNumOfReplicates + 1, :)) * 100; 
+    
+    %% LSV Average Plot
+    % Issue: Not all the replicates have the same amount of data
+    % Solution: Find the one with the lowest amount of data
+    
+    % Find and store the smallest set of data for each formula
+    for iFormula = 1 : length(data(1).Step(nProcess).Key)
+        shortest = inf; 
+        for iReplicate = 1 : nNumOfReplicates
+            % Find the smallest data set and use that
+            if data(iReplicate).Step(nProcess).Key(iFormula).amountOfX < shortest
+                whichShortest(iFormula).shortest = data(iReplicate).Step(nProcess).Key(iFormula).amountOfX;
+                shortest = data(iReplicate).Step(nProcess).Key(iFormula).amountOfX; 
+            end
+        end
+    end
+ 
+    % Plot the averages on one graph
+    % Create the plot title
+    sGraphTitle = sDataType + " Plot of Averages"; 
+
+    % Check to see if this graph title is available for use
+    [nFigNum, asPlotTitles] = checkAvailability(asPlotTitles, sGraphTitle);
+    figh = figure(nFigNum); 
+
+    % Hardcoded graph colors
+    colors = [[0, 0, 0]; [0, 1, 0]; [0, 0, 1]; [1, 0, 0]; [1, 0, 1]; [0, 1, 1]; [0, 0.5, 0]; [1, 0.6, 0]; [0, 128/255, 1]; [128/255, 0, 1]; [132/255, 186/255, 91/255]; [0.5, 0.5, 0.5]];
+    
+    
+
+    for iFormula = 1 : length(data(1).Step(nProcess).Key)
+        for iReplicate = 1 : nNumOfReplicates
+            % Get the shortest value
+            shortest = whichShortest(iFormula).shortest;
+
+            % Get the complete x and y data
+            x = data(iReplicate).Step(nProcess).Key(iFormula).dat(:, 1); 
+            y = data(iReplicate).Step(nProcess).Key(iFormula).dat(:, 2); 
+            
+            % Crop the data
+            xCropped = x(length(x) - shortest + 1: end); 
+            yCropped = y(length(y) - shortest + 1: end); 
+
+            % Get the cupID
+            sCupID = data(iReplicate).Step(nProcess).Key(iFormula).cupID; 
+
+            % Get the file prefix
+%             sFilePrefix = data(iReplicate).Step(nProcess).Key(iFormula).cupID(1:2); 
+
+            % Get the length of the smallest data set
+%             shortest = whichShortest(iFormula).shortest; 
+
+            % Initialize avgX and avgY
+            if iReplicate == 1
+                sumX = zeros(size(xCropped)); 
+                sumY = zeros(size(yCropped)); 
+            end
+
+            sumX = sumX + xCropped;
+            sumY = sumY + yCropped;
+        end
+        
+        % Calculate the averages 
+        avgX = sumX / nNumOfReplicates; 
+        avgY = sumY / nNumOfReplicates; 
+        
+        % Plot the average values
+        hold on; 
+        plots(iFormula) = plot(avgX, avgY, "DisplayName", getFormulaName(sCupID(1:2)), "Color", colors(iFormula, :)); 
+%         hold on; 
+        title(sGraphTitle)
+        xlabel('Potential (V)')
+        ylabel('Current (mA/g)')
+        legend('Location', 'best'); 
+    end
+    vertLine = xline(-1.5, LineStyle='REPLACE_WITH_DASH_DASH', Color='k', DisplayName='-1.5 V'); 
+    hold off; 
+    lgd = legend(plots, 'FontSize', 10, 'Location', 'best');
+
+    % Make figure bigger
+    pos = get(figh, 'position'); 
+    set(figh, 'position', [pos(1:2)/4 pos(3:4)*2])
+
+end
+
+%% RUN MB PROCEDURE
+function[asPlotTitles] = runMBProcedure(dataFolder, nNumOfReplicates, replicateNames, asPlotTitles)
+% The runMbProcedure will run analysis on the MB files in the data folder.
+% There are two different MB steps in the entire process. The biggest 
+% difference between this procedure and the others is that the two steps 
+% here ask for two different axes. So, to avoid any confusion I will go
+% ahead and lock the choices in so that they cannot be changed. 
+% Input
+%   dataFolder          The "Data" file path appended to the end of the
+%                           data folder
+%   nNumOfReplicates    The number of replicates 
+%   replicateNames      The names of the replicate folders 
+%   asPlotTitles        String array; holds existing plot titles
+% Output
+%   asPlotTitles        String array; holds existing plot titles
+
+    % Local Variables
+    %   sDataType       String; the data we are looking at 
+    %   VariableNames   The new variable names for the columns of the data
+    %   xVar            string; the x variable we are looking at 
+    %   yVar            String; the y variable of interest
+    %   sXLabel         string; the preferred x label
+    %   sYLabel         string; the preferred y label 
+
+
+    % Set Data type
+    sDataType = "MB"; 
+
+    % Define variable names
+    VariableNames = {'mode', 'ox/red', 'error', 'control changes', ...
+                    'NS changes', 'counter inc.', 'NS', 'I Range', 'time/s', 'control/mA', 'Ewe/V', ...
+                    'I/mA', 'dq/mA.h', '(Q-Qo)/mA.h', '|Energy|/W.h', 'Energy Charge/W.h', ...
+                    'Energy discharge/W.h', 'Capacitance charge/mF', 'Capacitance discharge/mf', ...
+                    'Q discharge/mA.h', 'Q charge/mA.h', 'Capacity/mA.h', 'Efficiency/%', ...
+                    'cycle number', 'P/W', 'R/ohm'};
+
+    %% 7.1 MB PLOTS
+    % Define x and y variables
+    xVar = 'Q charge/mA.h'; 
+    yVar = 'Ewe/V'; 
+
+    % Define x and y label names
+    sXLabel = 'Capacity (mAh/g)';
+    sYLabel = 'Potential (V)'; 
+
+    % Update asPlotTitles and plot 
+    asPlotTitles = runGeneralReplicatePlot(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, sXLabel, sYLabel, 7, asPlotTitles); 
+
+    %% 7.2 MB Data Analysis
+    asPlotTitles = runMBDataAnalysis(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, asPlotTitles);
+
+    %% 10.1 MB PLOTS
+    % Define x and y variables
+    xVar = 'time/s'; 
+    yVar = 'Ewe/V'; 
+
+    % Define x and y label names
+    sXLabel = 'Time (hrs.)';
+    sYLabel = 'Potential (V)';
+
+    % Update plot titles and plot
+    asPlotTitles = runGeneralReplicatePlot(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, sXLabel, sYLabel, 10, asPlotTitles); 
+
+end
+
+function[asPlotTitles] = runMBDataAnalysis(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, asPlotTitles)
+% This function will run the necessary data analysis process on the MB
+% data. 
+% Input
+%
+% Output
+%
+
+    % Local Variables
+    %
+
+    % Initialize the current process number 
+    nProcess = 7; 
+
+    % Load in the data
+    data = readInData(dataFolder, nNumOfReplicates, replicateNames, VariableNames, nProcess, xVar, yVar);
+
+    % Initialize the number of formulas
+    nNumFormulas = length(data(1).Step(nProcess).Key); 
+
+%     %% Get the final capacity values on the voltage vs capacity graphs
+    aafFinalCapacitySummary = [nNumOfReplicates, nNumFormulas]; 
+
+    for iFormula = 1 : length(data(1).Step(nProcess).Key)
+        for iReplicate = 1 : nNumOfReplicates
+            % Store the current data
+            currentData = data(iReplicate).Step(nProcess).Key(iFormula).dat; 
+
+            % Get the CupID
+            sCupID = data(iReplicate).Step(nProcess).Key(iFormula).cupID; 
+
+            % get the formula name
+            sFormulaName = data(iReplicate).Step(nProcess).Key(iFormula).formula; 
+
+            % Get the last value
+            fLastCapacityValue = currentData(end, 1);
+
+            fprintf('Final Capacity Value for formula %35s (Cup ID = %4s) of replicate %2d: %8.3f \n', sFormulaName, sCupID, iReplicate, fLastCapacityValue)
+            fprintf("\n")
+
+            aafFinalCapacitySummary(iReplicate, iFormula) = fLastCapacityValue; 
+        end
+    end
+
+    % Write just numbers of currents at the -1.5 Voltages
+    for iFormula = 1 : nNumFormulas
+        for iReplicate = 1 : nNumOfReplicates
+            fprintf("%f\n", aafFinalCapacitySummary(iReplicate, iFormula))
+        end
+    end
+    
+
+
+%     %% Plot the averages
+    % Issue: Not all the replicates have the same amount of data
+
+    % Solution: Find the one with the lowest amount of data
+    
+    % Find and store the smallest set of data for each formula
+    for iFormula = 1 : length(data(1).Step(nProcess).Key)
+        shortest = inf; 
+        for iReplicate = 1 : nNumOfReplicates
+            % Find the smallest data set and use that
+            if data(iReplicate).Step(nProcess).Key(iFormula).amountOfX < shortest
+                whichShortest(iFormula).shortest = data(iReplicate).Step(nProcess).Key(iFormula).amountOfX;
+                shortest = data(iReplicate).Step(nProcess).Key(iFormula).amountOfX; 
+            end
+        end
+    end
+ 
+    % Plot the averages on one graph
+    % Create the plot title
+    sGraphTitle = sDataType + " Plot of Averages"; 
+
+    % Check to see if this graph title is available for use
+    [nFigNum, asPlotTitles] = checkAvailability(asPlotTitles, sGraphTitle);
+    figh = figure(nFigNum); 
+
+    % Hardcoded graph colors
+    colors = [[0, 0, 0]; [0, 1, 0]; [0, 0, 1]; [1, 0, 0]; [1, 0, 1]; [0, 1, 1]; [0, 0.5, 0]; [1, 0.6, 0]; [0, 128/255, 1]; [128/255, 0, 1]; [132/255, 186/255, 91/255]; [0.5, 0.5, 0.5]];
+
+    for iFormula = 1 : length(data(1).Step(nProcess).Key)
+        for iReplicate = 1 : nNumOfReplicates
+            % Get the shortest value
+            shortest = whichShortest(iFormula).shortest;
+
+            % Get the complete x and y data
+            x = data(iReplicate).Step(nProcess).Key(iFormula).dat(:, 1); 
+            y = data(iReplicate).Step(nProcess).Key(iFormula).dat(:, 2); 
+            
+            % Crop the data
+            xCropped = x(length(x) - shortest + 1: end); 
+            yCropped = y(length(y) - shortest + 1: end); 
+
+            % Get the cupID
+            sCupID = data(iReplicate).Step(nProcess).Key(iFormula).cupID; 
+
+            % Get the file prefix
+%             sFilePrefix = data(iReplicate).Step(nProcess).Key(iFormula).cupID(1:2); 
+
+            % Get the length of the smallest data set
+%             shortest = whichShortest(iFormula).shortest; 
+
+            % Initialize avgX and avgY
+            if iReplicate == 1
+                sumX = zeros(size(xCropped)); 
+                sumY = zeros(size(yCropped)); 
+            end
+
+            sumX = sumX + xCropped;
+            sumY = sumY + yCropped;
+        end
+        
+        % Calculate the averages 
+        avgX = sumX / nNumOfReplicates; 
+        avgY = sumY / nNumOfReplicates; 
+        
+        % Plot the average values
+        figure(nFigNum)
+        hold on; 
+        plot(avgX, avgY, "DisplayName", getFormulaName(sCupID(1:2)), "Color", colors(iFormula, :))
+        set(gca, 'Ydir', 'reverse')
+        title(sGraphTitle)
+        xlabel('Capacity (mAh/g)')
+        ylabel('Potential (V)')
+        legend('Location', 'best'); 
+    end
+
+    % Make figure bigger
+    pos = get(figh, 'position'); 
+    set(figh, 'position', [pos(1:2)/4 pos(3:4)*2])
+    hold off; 
+
+end
+
+%% RUN PEIS PROCEDURE
+function[asPlotTitles] = runPEISProcedure(dataFolder, nNumOfReplicates, replicateNames, asPlotTitles)
+% The runPEISProcedure will run analysis on the PEIS files in the data folder.
+% There are three different PEIS steps in the procedure where we will be
+% plotting -Im Z vs Re Z for all three. The main difference between the
+% 3 graphs is that they will be at different states of charge.
+% Specifically, 06_PEIS will be at 100% SoC, 9_PEIS will be at 0% SoC, and
+% 12_PEIS will be at a variety of SoC. 
+% NOTE: ALL EIS SHOULD HAVE EQUAL X-Y PLANE SCALES
+
+% Input
+%   dataFolder          The "Data" file path appended to the end of the
+%                           data folder
+%   nNumOfReplicates    The number of replicates 
+%   replicateNames      The names of the replicate folders 
+%   asPlotTitles        string array; All the plot titles (constantly
+%                           updated)
+% Output
+%   asPlotTitles        string array; all the plot titles (constantly
+%                           updated)
+% Output
+
+    % Local Variable
+    %   sDataType           String; the data we are looking at
+    %   xVar                String; the x-variable we want plotted
+    %   yVar                String; the y-variable we want plotted
+    %   sXLabel             String; the x label
+    %   sYLabel             String; the y label
+    %   VariableNames       structure; the variable names for the data
+
+
+    % Set datatype 
+    sDataType = "PEIS"; 
+
+    % Define variable names
+    VariableNames = {'freq/Hz', 'Re(Z)/Ohm', ...
+                    '-Im(Z)/Ohm', '|Z|/Ohm', 'Phase(Z)/deg', 'time/s', ...
+                    'Ewe/V', 'I/mA', 'Cs/mF', 'Cp/mF', 'cycle numer', ...
+                    'I Range', '|Ewe|/V', '|I|/A', 'Ns', '(Q-Qo)/mA.h', ...
+                    'Re(Y)/Ohm-1', 'Im(Y)/Ohm-1', '|Y|/Ohm-1', ...
+                    'Phase(Y)/deg', 'dq/mA.h'};
+
+    % Define x and y variables
+    xVar = 'Re(Z)/Ohm'; 
+    yVar = '-Im(Z)/Ohm'; 
+
+    % Define the x and y labels
+    sXLabel = 'Real Z (ohm)'; 
+    sYLabel = '-Imaginary Z (ohm)'; 
+
+    %% 6. PEIS
+    asPlotTitles = runGeneralReplicatePlot(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, sXLabel, sYLabel, 6, asPlotTitles);
+
+    % Plot horizontal lines across step 6 
+    for sPlotTitle = asPlotTitles
+        if contains(sPlotTitle, "PEIS (Step 6)")
+            % Get the figure number and figure
+            [nFigNum, ~] = checkAvailability(asPlotTitles, sPlotTitle); 
+            figure(nFigNum)
+
+            % Add horizontal line
+            horizLine = yline(0, LineStyle='-', color='k'); 
+            horizLine.DisplayName = ''; 
+
+            % Remove horizontal line from legend
+            % Initialize empty cell array
+            valuableLegend = {}; 
+
+            % Remove all of the text that does not contain "Replicate"
+            hLegend = findobj(gcf, 'Type', 'Legend'); 
+    
+            for iTitle = 1 : length(hLegend.String)
+                if ~isempty(hLegend.String{iTitle})
+                    valuableLegend{end+1} = hLegend.String{iTitle};
+                end
+            end         
+    
+            hold off; 
+
+            % Produce the final legend
+            legend(valuableLegend, 'FontSize', 10, "Location", "best")
+        end
+    end
+
+    %% 9. PEIS (Default view)
+    asPlotTitles = runGeneralReplicatePlot(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, sXLabel, sYLabel, 9, asPlotTitles);
+    % Plot horizontal lines across step 9 
+    for sPlotTitle = asPlotTitles
+        if contains(sPlotTitle, "PEIS (Step 9)")
+            % Get the figure number and figure
+            [nFigNum, ~] = checkAvailability(asPlotTitles, sPlotTitle); 
+            figure(nFigNum)
+
+            % Add horizontal line
+            horizLine = yline(0, LineStyle='-', color='k'); 
+            horizLine.DisplayName = ''; 
+
+            % Remove horizontal line from legend
+            % Initialize empty cell array
+            valuableLegend = {}; 
+
+            % Remove all of the text that does not contain "Replicate"
+            hLegend = findobj(gcf, 'Type', 'Legend'); 
+    
+            for iTitle = 1 : length(hLegend.String)
+                if ~isempty(hLegend.String{iTitle})
+                    valuableLegend{end+1} = hLegend.String{iTitle};
+                end
+            end         
+    
+            hold off; 
+
+            % Produce the final legend
+            legend(valuableLegend, 'FontSize', 10, "Location", "best")
+        end
+    end
+
+    %% 9. PEIS (Zoomed View)
+    asPlotTitles = runGeneralReplicatePlot(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, sXLabel, sYLabel, 9, asPlotTitles, 1);
+
+    % Plot horizontal lines across step 9 (zoomed in version)
+    for sPlotTitle = asPlotTitles
+        if contains(sPlotTitle, "PEIS (Step 9)") && contains(sPlotTitle, "Zoomed")
+            % Get the figure number and figure
+            [nFigNum, ~] = checkAvailability(asPlotTitles, sPlotTitle); 
+            figure(nFigNum)
+
+            % Add horizontal line
+            horizLine = yline(0, LineStyle='-', color='k'); 
+            horizLine.DisplayName = ''; 
+
+            % Remove horizontal line from legend
+            % Initialize empty cell array
+            valuableLegend = {}; 
+
+            % Remove all of the text that does not contain "Replicate"
+            hLegend = findobj(gcf, 'Type', 'Legend'); 
+    
+            for iTitle = 1 : length(hLegend.String)
+                if ~isempty(hLegend.String{iTitle})
+                    valuableLegend{end+1} = hLegend.String{iTitle};
+                end
+            end         
+    
+            hold off; 
+
+            % Produce the final legend
+            legend(valuableLegend, 'FontSize', 10, "Location", "best")
+        end
+    end
+
+%     % Plot the zoomed in versions of step 9
+%     for sPlotTitle = asPlotTitles
+%         if contains(sPlotTitle, 'PEIS (Step 9)')
+%             % Create new figure where we are zoomed out
+%             sGraphTitle = sPlotTitle + " Zoomed"; 
+% 
+%             % Get data from the previous plot
+%             [nFigNum, ~ ] = checkAvailability(asPlotTitles, sPlotTitle); 
+%             figure(nFigNum)
+%             fig = gcf; 
+%             axObjs = fig.Children;
+% 
+%             h = findobj(gca, 'Type', 'line');
+%             hLegend = findobj(gcf, 'Type', 'Legend');
+% 
+%             hLegend.String{1}
+%             
+%             v = get(h, 'Color')
+% %             get(h)
+%             v{1}
+% 
+%             x = get(h, 'Xdata');
+%             y = get(h, 'Ydata');
+% 
+%             % Check availability and get figure number
+%             [nFigNum, asPlotTitles] = checkAvailability(asPlotTitles, sGraphTitle); 
+%             figure(nFigNum)
+% 
+%             anDims = size(x); 
+%             for iRow = 1 : anDims(1)
+%                 hLegend.String{iRow}
+%                 plot(x{iRow}, y{iRow}, '*', "Color", v{iRow}, "DisplayName", hLegend.String{iRow})
+%                 hold on; 
+%             end
+%             hold off; 
+% 
+%             % Format Graph
+%             xlabel('Real Z (ohm)')
+%             ylabel('-Imaginary Z (ohm)')
+%             title(sGraphTitle)
+%             axis([0 5 -0.5 4.5])
+%             xticks('auto')
+%             xticklabels('auto')
+%             legend()
+%         end
+%     end
+
+end
+
+%% RUN GCPL PROCEDURE
+function[asPlotTitles] = runGCPLProcedure(dataFolder, nNumOfReplicates, replicateNames, asPlotTitles)
+% The runCAProcedure will run analysis on the CA files in the data folder.
+% There is only one CA step which does require the header. We will plot
+% mA/g vs time (either in minutes or in hours). 
+
+% Input
+%   dataFolder          The "Data" file path appended to the end of the
+%                           data folder
+%   nNumOfReplicates    The number of replicates 
+%   replicateNames      The names of the replicate folders 
+%   asPlotTitles        string array; All the plot titles (constantly
+%                           updated)
+% Output
+%   asPlotTitles        string array; all the plot titles (constantly
+%                           updated)
+% Output
+
+    % Local Variable
+    %   sDataType           String; the data we are looking at
+    %   xVar                String; the x-variable we want plotted
+    %   yVar                String; the y-variable we want plotted
+    %   sXLabel             String; the x label
+    %   sYLabel             String; the y label
+    %   VariableNames       structure; the variable names for the data
+
+
+    % Set datatype 
+    sDataType = "GCPL"; 
+    nStepNumber = 11; 
+
+    % Define variable names
+    VariableNames = {'mode', 'ox/red', ...
+                    'error', 'control changes', 'NS changes', ...
+                    'counter inc.', 'Ns', 'time/s', 'dq/mA.h', '(Q-Qo)/mA.h',...
+                    'control/V/mA', 'Ewe/V', 'I Range', 'Energy charge/W.h', ...
+                    'Energy discharge/W.h', 'Capacitance charge/mF', ... 
+                    'Capacitance discharge/mF', 'I/mA', 'Q discharge/mA.h',...
+                    'Q charge/mA.h', 'Capacity/mA.h', 'Efficiency/%', ...
+                    'control/V', 'control/mA', 'cycle number', 'P/W'};
+
+    %% 11. GCPL
+    % Define x and y variables
+    xVar = 'time/s'; 
+    yVar = 'Ewe/V'; 
+
+    % Define x and y variable names
+    sXLabel = 'Time (hrs)';
+    sYLabel = 'Potential (V)'; 
+
+    asPlotTitles = runGeneralReplicatePlot(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, sXLabel, sYLabel, nStepNumber, asPlotTitles);
+end 
+
+##### SOURCE END #####
+--></body></html>
